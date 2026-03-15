@@ -2,12 +2,12 @@
 
 module Typer where
 
+import Control.Monad (replicateM)
 import Control.Monad.Except
 import Control.Monad.State
 import Data.Map qualified as M
 import Data.Set qualified as S
 import Tree
-import Control.Monad (replicateM)
 
 -- References
 -- https://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.18.9348&rep=rep1&type=pdf
@@ -56,7 +56,7 @@ extend k a (Context ctx) = Context $ M.insert k a ctx
 
 instance Apply Typ where
   -- [C/s] = C
-  apply _ c@TCon {} = c
+  apply _ c@TCon{} = c
   -- [x/s]x = s
   -- [x/s]y = y   x ≠ y
   apply s t@(TVar y) = M.findWithDefault t y s
@@ -64,7 +64,7 @@ instance Apply Typ where
   apply s (TArrow t1 t2) = TArrow (apply s t1) (apply s t2)
 
   -- FTV(C) = ∅
-  ftv TCon {} = S.empty
+  ftv TCon{} = S.empty
   -- FTV(σ) = σ
   ftv (TVar s) = S.singleton s
   -- FTV(τ1 → τ2) = FTV(τ1) ∪ FTV(τ2)
@@ -122,8 +122,8 @@ bind a t
 -- generalize(Γ, τ) = ∀α'.τ where α' = ftv(τ) − ftv(Γ)
 gen :: Context -> Typ -> Scheme
 gen ctx t = Forall as t
-  where
-    as = S.toList (ftv t `S.difference` ftv ctx)
+ where
+  as = S.toList (ftv t `S.difference` ftv ctx)
 
 -- instantiate(∀α1 ...αn.τ) = [α1 := β1,...,αn := βn]τ where β1,...,βn are fresh
 inst :: Scheme -> InferM Typ
@@ -136,11 +136,11 @@ infer :: Context -> Term -> InferM (Subst, Typ)
 --
 -- ------------ Int
 --  Γ ⊢ n:Int,∅
-infer _ (TmLit LInt {}) = pure (emptySubst, TCon "Int")
+infer _ (TmLit LInt{}) = pure (emptySubst, TCon "Int")
 --
 -- ------------------ (Bool-false)   ------------------- (Bool-true)
 --  Γ ⊢ False:Bool,∅                  Γ ⊢ True:Bool,∅
-infer _ (TmLit LBool {}) = pure (emptySubst, TCon "Bool")
+infer _ (TmLit LBool{}) = pure (emptySubst, TCon "Bool")
 --
 --  x:σ ∈ Γ     τ = inst(σ)
 -- -------------------------- (Var)
@@ -188,7 +188,7 @@ letters = [1 ..] >>= flip replicateM ['a' .. 'z']
 newvar :: InferM Typ
 newvar = do
   s <- get
-  put s {count = count s + 1}
+  put s{count = count s + 1}
   (pure . TVar . MkTVar) (letters !! count s)
 
 runInfer :: Term -> Either TypeError Typ

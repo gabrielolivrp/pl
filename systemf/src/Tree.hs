@@ -21,7 +21,7 @@ instance Show Typ where
   show (TVar name) = name
   show (TArrow t1 t2) =
     case t1 of
-      TArrow {} -> "(" ++ show t1 ++ ") -> " ++ show t2
+      TArrow{} -> "(" ++ show t1 ++ ") -> " ++ show t2
       _ -> show t1 ++ " -> " ++ show t2
   show (TForall name typ) =
     "∀" ++ name ++ ". " ++ show typ
@@ -52,7 +52,7 @@ instance Show Term where
   show (TmVar name) = name
   show (TmAbs param t body) = "λ" ++ param ++ ":" ++ show t ++ ". " ++ show body
   show (TmApp func argm) = case func of
-    TmAbs {} -> "(" ++ show func ++ ") " ++ show argm
+    TmAbs{} -> "(" ++ show func ++ ") " ++ show argm
     _ -> show func ++ " " ++ show argm
   show (TmTAbs param body) = "Λ" ++ param ++ ". " ++ show body
   show (TmTApp t t') = show t ++ " [" ++ show t' ++ "]"

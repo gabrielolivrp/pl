@@ -16,8 +16,8 @@ lexer :: P.TokenParser ()
 lexer =
   P.makeTokenParser
     emptyDef
-      { P.reservedNames = ["let", "in", "True", "False", "forall"],
-        P.reservedOpNames = ["λ", "->", "=", ".", "∀"]
+      { P.reservedNames = ["let", "in", "True", "False", "forall"]
+      , P.reservedOpNames = ["λ", "->", "=", ".", "∀"]
       }
 
 pLexeme :: ParserM a -> ParserM a
@@ -58,8 +58,8 @@ pLitInt = TmLit . LInt . fromIntegral <$> P.natural lexer
 
 pLitBool :: ParserM Term
 pLitBool = TmLit . LBool <$> go
-  where
-    go = (pReserved "True" $> True) <|> (pReserved "False" $> False)
+ where
+  go = (pReserved "True" $> True) <|> (pReserved "False" $> False)
 
 pLiteral :: ParserM Term
 pLiteral = pLitInt <|> pLitBool
@@ -82,13 +82,13 @@ pAbs = do
 
 pTerm :: ParserM Term
 pTerm = foldl1 TmApp <$> some go
-  where
-    go =
-      pParens pTerm
-        <|> pLet
-        <|> pAbs
-        <|> pLiteral
-        <|> pVar
+ where
+  go =
+    pParens pTerm
+      <|> pLet
+      <|> pAbs
+      <|> pLiteral
+      <|> pVar
 
 contents :: ParserM a -> ParserM a
 contents p = P.whiteSpace lexer *> pLexeme p <* eof

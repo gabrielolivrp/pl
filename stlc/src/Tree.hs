@@ -16,7 +16,7 @@ instance Show Typ where
   show TUnit = "Unit"
   show (TArrow t1 t2) =
     case t1 of
-      TArrow {} -> "(" ++ show t1 ++ ") -> " ++ show t2
+      TArrow{} -> "(" ++ show t1 ++ ") -> " ++ show t2
       _ -> show t1 ++ " -> " ++ show t2
 
 -- e ::=
@@ -43,5 +43,5 @@ instance Show Term where
   show (TmAbs x t e) = "λ" ++ x ++ ": " ++ show t ++ ". " ++ show e
   show (TmApp e1 e2) =
     case e1 of
-      TmAbs {} -> "(" ++ show e1 ++ ") " ++ show e2
+      TmAbs{} -> "(" ++ show e1 ++ ") " ++ show e2
       _ -> show e1 ++ " " ++ show e2

@@ -6,15 +6,15 @@ import Typer
 
 tests :: [String]
 tests =
-  [ "λx: Unit. x",
-    "λx: Nat. λy: Nat. x",
-    "λx: Nat. Succ x",
-    "λx: Nat -> Nat. λy: Nat. (x y)",
-    "λx: Nat -> Nat. x 0",
-    "λf: Nat -> Nat. λx: Nat. f (f x)",
-    "(λx: Nat. Succ x) 1",
-    "λx: Nat -> Nat. λy: Nat. x (x y)",
-    "λx: Nat -> (Nat -> Nat). λy: Nat. λz: Nat. x y z"
+  [ "λx: Unit. x"
+  , "λx: Nat. λy: Nat. x"
+  , "λx: Nat. Succ x"
+  , "λx: Nat -> Nat. λy: Nat. (x y)"
+  , "λx: Nat -> Nat. x 0"
+  , "λf: Nat -> Nat. λx: Nat. f (f x)"
+  , "(λx: Nat. Succ x) 1"
+  , "λx: Nat -> Nat. λy: Nat. x (x y)"
+  , "λx: Nat -> (Nat -> Nat). λy: Nat. λz: Nat. x y z"
   ]
 
 main :: IO ()

@@ -45,9 +45,9 @@ pBrackets = P.brackets lexer
 
 pNat :: ParserM Term
 pNat = intToNat . fromIntegral <$> P.natural lexer
-  where
-    intToNat 0 = TmZero
-    intToNat n = TmSucc (intToNat (n - 1))
+ where
+  intToNat 0 = TmZero
+  intToNat n = TmSucc (intToNat (n - 1))
 
 pZero :: ParserM Term
 pZero = pReserved "Zero" >> pure TmZero
@@ -99,13 +99,13 @@ pTerm = foldl1 TmApp <$> some pTApp
 
 pType :: ParserM Typ
 pType = pSimpleType `chainr1` (pArrow >> pure TArrow)
-  where
-    pSimpleType =
-      (pReserved "Unit" >> pure TUnit)
-        <|> (pReserved "Nat" >> pure TNat)
-        <|> (TForall <$> (pSymbol "∀" *> pIdentifer) <*> pType)
-        <|> (TVar <$> pIdentifer)
-        <|> pParens pType
+ where
+  pSimpleType =
+    (pReserved "Unit" >> pure TUnit)
+      <|> (pReserved "Nat" >> pure TNat)
+      <|> (TForall <$> (pSymbol "∀" *> pIdentifer) <*> pType)
+      <|> (TVar <$> pIdentifer)
+      <|> pParens pType
 
 contents :: ParserM a -> ParserM a
 contents p = P.whiteSpace lexer *> pLexeme p <* eof
