@@ -1,3 +1,5 @@
+{-# LANGUAGE ImportQualifiedPost #-}
+
 module Typer where
 
 import Control.Monad.Except
@@ -5,6 +7,7 @@ import Control.Monad.State
 import Data.Map qualified as M
 import Data.Set qualified as S
 import Tree
+import Control.Monad (replicateM)
 
 -- References
 -- https://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.18.9348&rep=rep1&type=pdf
